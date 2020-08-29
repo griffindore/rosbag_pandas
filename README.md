@@ -2,7 +2,15 @@
 
 [![Build Status](https://travis-ci.org/eurogroep/rosbag_pandas.svg?branch=master)](https://travis-ci.org/eurogroep/rosbag_pandas)
 
-Python library (and some tools) for converting [ROS bagfiles](http://wiki.ros.org/rosbag) to [Pandas dataframes](https://pandas.pydata.org/).
+Python library (and some tools) for converting [ROS bagfiles](http://wiki.ros.org/rosbag) to [Pandas dataframes](https://pandas.pydata.org/). This fork is twice as fast as the origional version and four times more memory efficient. Also a real-time progress bar is provided in case you are boring.
+
+## Requirements
+
+```
+pip install flatten-dict
+pip install tqdm
+
+```
 
 ## Python library
 
