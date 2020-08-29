@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
 import logging
+from flatten_dict import flatten
+import tqdm
 
-from .flatdict import FlatterDict
 import numpy as np
 import pandas as pd
 import rosbag
@@ -63,18 +64,21 @@ def bag_to_dataframe(bag_name, include=None, exclude=None):
     index = np.empty(df_length)
     index.fill(np.NAN)
     data_dict = {}
+    pbar = tqdm(total=df_length)
     for idx, (topic, msg, t) in enumerate(bag.read_messages(topics=topics)):
         flattened_dict = _get_flattened_dictionary_from_ros_msg(msg)
         for key, item in flattened_dict.items():
             data_key = topic + "/" + key
             if data_key not in data_dict:
-                if isinstance(item, float) or isinstance(item, int):
+                if type(item) in (float, int):
                     data_dict[data_key] = np.empty(df_length)
                     data_dict[data_key].fill(np.NAN)
                 else:
                     data_dict[data_key] = np.empty(df_length, dtype=np.object)
             data_dict[data_key][idx] = item
         index[idx] = t.to_sec()
+        pbar.update(1)
+    pbar.close()
 
     bag.close()
 
@@ -88,7 +92,7 @@ def _get_flattened_dictionary_from_ros_msg(msg):
     :param msg: ROS msg instance
     :return: Flattened dict
     """
-    return FlatterDict(convert_ros_message_to_dictionary(msg), delimiter="/")
+    return flatten(convert_ros_message_to_dictionary(msg), reducer='path')
 
 
 def _get_filtered_topics(topics, include, exclude):
