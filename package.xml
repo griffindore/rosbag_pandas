@@ -17,8 +17,6 @@
   <exec_depend condition="$ROS_PYTHON_VERSION == 3">python3-pandas</exec_depend>
   <exec_depend condition="$ROS_PYTHON_VERSION == 2">python-tqdm</exec_depend>
   <exec_depend condition="$ROS_PYTHON_VERSION == 3">python3-tqdm</exec_depend>
-  <exec_depend condition="$ROS_PYTHON_VERSION == 2">python-pathlib2</exec_depend>
-  <exec_depend condition="$ROS_PYTHON_VERSION == 3">python-pathlib2</exec_depend>
   <exec_depend>rosbag</exec_depend>
   <exec_depend>rospy_message_converter</exec_depend>
   <exec_depend>roslib</exec_depend>
