@@ -4,17 +4,6 @@
 
 Python library (and some tools) for converting [ROS bagfiles](http://wiki.ros.org/rosbag) to [Pandas dataframes](https://pandas.pydata.org/).
 
-## Performance 
-
-This fork is twice as fast as the original version and four times more memory efficient. A real-time progress bar is provied for you as well.
-
-## Requirements
-
-```
-pip install flatten-dict
-pip install tqdm
-
-```
 
 ## Python library
 
