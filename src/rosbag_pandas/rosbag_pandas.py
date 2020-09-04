@@ -2,7 +2,7 @@
 
 import logging
 from flatten_dict import flatten
-import tqdm
+from tqdm import tqdm
 
 import numpy as np
 import pandas as pd
