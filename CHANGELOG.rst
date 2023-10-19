@@ -2,6 +2,16 @@
 Changelog for package rosbag_pandas
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.5.6 (2023-10-19)
+------------------
+* Fixed numpy deprecation of np.object
+* Contributors: Mike Lyons
+
+0.5.5 (2020-12-17)
+------------------
+* Performance Enhancements
+* Contributors: Yu Cao
+
 0.5.4 (2020-08-25)
 ------------------
 * chore: Noetic compatibility

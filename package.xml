@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="3">
   <name>rosbag_pandas</name>
-  <version>0.5.4</version>
+  <version>0.5.6</version>
   <description>Create a Pandas data frame from a ros bag file.</description>
 
   <maintainer email="rein@eurotec.nu">Rein Appeldoorn</maintainer>
