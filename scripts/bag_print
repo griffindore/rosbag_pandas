@@ -5,7 +5,8 @@ from __future__ import print_function
 import argparse
 import logging
 
-import rosbag_pandas
+import rosbag_parquet
+from rosbag_parquet.utils import topics_from_keys
 
 
 def build_parser():
@@ -32,6 +33,6 @@ if __name__ == '__main__':
     if args.verbose:
         logging.getLogger().setLevel(logging.DEBUG)
 
-    topics = rosbag_pandas.topics_from_keys(args.key)
-    df = rosbag_pandas.bag_to_dataframe(args.bag, include=topics)
+    topics = topics_from_keys(args.key)
+    df = rosbag_parquet.bag_to_dataframe(args.bag, include=topics)
     print(df.filter(items=args.key).to_string())

@@ -1,0 +1,11 @@
+flatten_dict>=0.4.2
+pandas>=2.0
+pathlib2>=2.3
+pyarrow>=7.0.0
+pycryptodomex>=3.19.0
+python-snappy>=0.6.0
+py3rosmsgs>=1.18.2
+PyYAML>=6.0.1
+rospkg>=1.5.0
+rospy_message_converter>=0.5.2
+tqdm>=4.66.1
