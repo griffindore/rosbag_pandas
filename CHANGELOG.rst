@@ -2,6 +2,13 @@
 Changelog for package rosbag_parquet
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.1.0 (2023-11-21)
+------------------
+* Disabled the progress bar by default in scripts and added a `-s`, `--show-progress` option to enable it.
+* Added an optional `indexing_topic` parameter to `bag_to_dataframes` to specify the topic to use as an indexer for other topics.
+  When set, an additional parquet file will be created that contains the row number of each topic at the time for each message of the indexer topic.
+* Added an `-x`, `--indexing-topic` option to `bag_parquet` to specify the `indexing_topic` parameter.
+
 1.0.0 (2023-10-20)
 ------------------
 * Removed the copied versions of pathlib2 and flatten_dict and specified installation requirements in setup.py

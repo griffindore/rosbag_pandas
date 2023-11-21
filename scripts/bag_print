@@ -23,6 +23,9 @@ def build_parser():
     parser.add_argument('-v', '--verbose',
                         help="Log verbose",
                         default=False, action="store_true")
+    parser.add_argument('-s', '--show-progress',
+                        help="Show progress bar",
+                        default=False, action="store_true")
     return parser
 
 
@@ -34,8 +37,7 @@ if __name__ == '__main__':
         logging.getLogger().setLevel(logging.DEBUG)
 
     topics = topics_from_keys(args.key)
-    print(topics)
-    dfs = rosbag_parquet.bag_to_dataframes(args.bag, include=topics)
+    dfs = rosbag_parquet.bag_to_dataframes(args.bag, include=topics, show_progress=args.show_progress)
     topic_keys = {}
     for key in args.key:
         topic, key = key.rsplit('/', maxsplit=1)

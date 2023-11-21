@@ -14,7 +14,7 @@ class RosbagPandaException(Exception):
     pass
 
 
-def bag_to_dataframes(bag_name, include=None, exclude=None, exclude_strings=False,
+def bag_to_dataframes(bag_name, include=None, exclude=None, indexing_topic=None, exclude_strings=False,
                       flatten_dict_sep=".", flatten_lists=False, show_progress=False):
     """
     Read in a rosbag file and create a pandas data frames for each topic
@@ -23,6 +23,7 @@ def bag_to_dataframes(bag_name, include=None, exclude=None, exclude_strings=Fals
     :param bag_name: String name for the bag file
     :param include: None, or List of Topics to include in the dataframe
     :param exclude: None, or List of Topics to exclude in the dataframe (only applies if include is None)
+    :param indexing_topic: Topic to use for indexing the dataframes
     :param exclude_strings: Exclude keys that have string types
     :param flatten_dict_sep: Separator for flattening the dictionary
     :param flatten_lists: Flatten lists to have a column per element
@@ -50,6 +51,9 @@ def bag_to_dataframes(bag_name, include=None, exclude=None, exclude_strings=Fals
 
     data_dict = {topic: {'time': np.empty(type_topic_info.topics[topic].message_count, dtype=np.float64)}
                  for topic in topics}
+    if indexing_topic is not None:
+        data_dict['/index'] = {indexing_topic: pd.array([None] * type_topic_info.topics[indexing_topic].message_count,
+                                                        dtype='Int32')}
     msg_count_dict = {topic: 0 for topic in topics}
     if show_progress:
         df_length = sum([type_topic_info.topics[t].message_count for t in topics])
@@ -79,7 +83,14 @@ def bag_to_dataframes(bag_name, include=None, exclude=None, exclude_strings=Fals
                         item_type = object
                     data_dict[topic][key] = np.empty(message_count, dtype=item_type)
 
+                    if indexing_topic is not None:
+                        data_dict['/index'][topic] = pd.array([None] * len(data_dict['/index'][indexing_topic]),
+                                                              dtype='Int32')
+
                 data_dict[topic][key][curr_msg_count] = item
+                if (indexing_topic is not None
+                        and msg_count_dict[indexing_topic] < len(data_dict['/index'][indexing_topic])):
+                    data_dict['/index'][topic][msg_count_dict[indexing_topic]] = curr_msg_count
         msg_count_dict[topic] += 1
         if show_progress:
             pbar.update(1)
@@ -92,6 +103,11 @@ def bag_to_dataframes(bag_name, include=None, exclude=None, exclude_strings=Fals
         df = pd.DataFrame(data_dict[topic])
         df.name = topic
         dfs[topic] = df
+    if indexing_topic is not None:
+        # Ffill the index to fill in nulls where a topic didn't have a message before the indexing topic
+        df = pd.DataFrame(data_dict['/index']).ffill()
+        df.name = '/index' + indexing_topic
+        dfs['/index' + indexing_topic] = df
     return dfs
 
 

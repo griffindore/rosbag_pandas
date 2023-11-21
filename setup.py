@@ -18,7 +18,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='rosbag_parquet',  # 'rosbag_pandas' and 'rosbags-dataframe' are taken
-    version='1.0.0',
+    version='1.1.0',
     description='ROS bag to parquet converter',
     long_description=long_description,
     long_description_content_type="text/markdown",

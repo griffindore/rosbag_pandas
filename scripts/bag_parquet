@@ -28,6 +28,12 @@ def build_parser():
     parser.add_argument('-c', '--compression',
                         help="Compression algorithm to use",
                         default='zstd')
+    parser.add_argument('-s', '--show-progress',
+                        help="Show progress bar",
+                        default=False, action="store_true")
+    parser.add_argument('-x', '--indexing-topic',
+                        help="Topic to use for indexing the dataframes",
+                        default=None)
     return parser
 
 
@@ -38,7 +44,8 @@ if __name__ == '__main__':
     if args.verbose:
         logging.getLogger().setLevel(logging.DEBUG)
 
-    dfs = rosbag_parquet.bag_to_dataframes(args.bag, include=args.include, exclude=args.exclude, show_progress=True)
+    dfs = rosbag_parquet.bag_to_dataframes(args.bag, include=args.include, exclude=args.exclude,
+                                           indexing_topic=args.indexing_topic, show_progress=args.show_progress)
 
     output_dir = args.output + '/' + args.bag.split('/')[-1].split('.')[0]
     os.makedirs(output_dir, exist_ok=True)
