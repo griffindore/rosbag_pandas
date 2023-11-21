@@ -9,6 +9,6 @@ def topics_from_keys(keys):
         if not key.startswith("/"):
             key = "/" + key
         chunks = key.split("/")
-        for i in range(2, len(chunks)):
+        for i in range(2, len(chunks) + 1):
             topics.add("/".join(chunks[0:i]))
     return list(topics)

@@ -2,6 +2,7 @@
 
 import argparse
 import logging
+import os
 
 import rosbag_parquet
 
@@ -20,7 +21,7 @@ def build_parser():
     parser.add_argument('-e', '--exclude',
                         help='List for topics to exclude',
                         nargs='*')
-    parser.add_argument('-o', '--output', help='name of the output file', required=True)
+    parser.add_argument('-o', '--output', help='directory of the output files', required=True)
     parser.add_argument('-v', '--verbose',
                         help="Log verbose",
                         default=False, action="store_true")
@@ -34,5 +35,13 @@ if __name__ == '__main__':
     if args.verbose:
         logging.getLogger().setLevel(logging.DEBUG)
 
-    df = rosbag_parquet.bag_to_dataframe(args.bag, include=args.include, exclude=args.exclude)
-    df.to_csv(args.output)
+    dfs = rosbag_parquet.bag_to_dataframes(args.bag, include=args.include, exclude=args.exclude, show_progress=True)
+
+    output_dir = args.output + '/' + args.bag.split('/')[-1].split('.')[0]
+    os.makedirs(output_dir, exist_ok=True)
+    for topic_name, df in dfs.items():
+        try:
+            df.to_csv(output_dir + '/' + topic_name[1:].replace('/', '__') + '.csv')
+        except Exception as e:
+            print(f"Topic '{topic_name}' failed to save")
+            print(e)

@@ -34,5 +34,13 @@ if __name__ == '__main__':
         logging.getLogger().setLevel(logging.DEBUG)
 
     topics = topics_from_keys(args.key)
-    df = rosbag_parquet.bag_to_dataframe(args.bag, include=topics)
-    print(df.filter(items=args.key).to_string())
+    print(topics)
+    dfs = rosbag_parquet.bag_to_dataframes(args.bag, include=topics)
+    topic_keys = {}
+    for key in args.key:
+        topic, key = key.rsplit('/', maxsplit=1)
+        if topic not in topic_keys:
+            topic_keys[topic] = []
+        topic_keys[topic].append(key)
+    for topic, keys in topic_keys.items():
+        print(dfs[topic][keys].to_string())

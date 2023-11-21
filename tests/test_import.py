@@ -2,7 +2,7 @@ import rosbag_parquet
 
 
 def test_numbers_3_4():
-    df = rosbag_parquet.bag_to_dataframe('tests/data/rosout.bag')
-    assert set(df) == {'/rosout/file', '/rosout/function', '/rosout/header/frame_id', '/rosout/header/seq',
-                       '/rosout/header/stamp/nsecs', '/rosout/header/stamp/secs', '/rosout/level', '/rosout/line',
-                       '/rosout/msg', '/rosout/name', '/rosout/topics/0'}
+    dfs = rosbag_parquet.bag_to_dataframes('tests/data/rosout.bag')
+    assert set(dfs['/rosout']) == {'file', 'function', 'header.frame_id', 'header.seq',
+                                   'header.stamp.nsecs', 'header.stamp.secs', 'level',
+                                   'line', 'msg', 'name', 'time', 'topics'}
