@@ -12,7 +12,7 @@ def build_parser():
     Builds the parser for reading the command line arguments
     :return: The argument parser
     """
-    parser = argparse.ArgumentParser(description='Script to parse bagfile to csv file')
+    parser = argparse.ArgumentParser(description='Script to parse bagfile to parquet files')
     parser.add_argument('-b', '--bag', help='Bag file to read', required=True,
                         type=str)
     parser.add_argument('-i', '--include',

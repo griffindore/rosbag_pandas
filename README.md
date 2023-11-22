@@ -37,61 +37,68 @@ This will select the `/pose/position/x` property of topic `/pose` in the message
 
 Convert a ROS bag file to a Parquet file:
 ```
-usage: bag_parquet [-h] [-b BAG] [-i [INCLUDE [INCLUDE ...]]]
-                   [-e [EXCLUDE [EXCLUDE ...]]] [-o OUTPUT] [-v]
+usage: bag_parquet [-h] -b BAG [-i [INCLUDE ...]] [-e [EXCLUDE ...]] -o OUTPUT [-v] [-c COMPRESSION] [-s] [-x INDEXING_TOPIC]
 
-Script to parse bagfile to parquet file
+Script to parse bagfile to parquet files
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
   -b BAG, --bag BAG     Bag file to read
-  -i [INCLUDE [INCLUDE ...]], --include [INCLUDE [INCLUDE ...]]
+  -i [INCLUDE ...], --include [INCLUDE ...]
                         List for topics to include
-  -e [EXCLUDE [EXCLUDE ...]], --exclude [EXCLUDE [EXCLUDE ...]]
+  -e [EXCLUDE ...], --exclude [EXCLUDE ...]
                         List for topics to exclude
   -o OUTPUT, --output OUTPUT
-                        name of the output file
+                        directory of the output files
   -v, --verbose         Log verbose
+  -c COMPRESSION, --compression COMPRESSION
+                        Compression algorithm to use
+  -s, --show-progress   Show progress bar
+  -x INDEXING_TOPIC, --indexing-topic INDEXING_TOPIC
+                        Topic to use for indexing the dataframes
 ```
 
 ### bag_csv
 
 Convert a ROS bag file to a CSV file:
 ```
-usage: bag_csv [-h] [-b BAG] [-i [INCLUDE [INCLUDE ...]]]
-               [-e [EXCLUDE [EXCLUDE ...]]] [-o OUTPUT] [-v]
+usage: bag_csv [-h] -b BAG [-i [INCLUDE ...]] [-e [EXCLUDE ...]] -o OUTPUT [-v] [-s] [-x INDEXING_TOPIC]
 
-Script to parse bagfile to csv file
+Script to parse bagfile to csv files
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
   -b BAG, --bag BAG     Bag file to read
-  -i [INCLUDE [INCLUDE ...]], --include [INCLUDE [INCLUDE ...]]
+  -i [INCLUDE ...], --include [INCLUDE ...]
                         List for topics to include
-  -e [EXCLUDE [EXCLUDE ...]], --exclude [EXCLUDE [EXCLUDE ...]]
+  -e [EXCLUDE ...], --exclude [EXCLUDE ...]
                         List for topics to exclude
   -o OUTPUT, --output OUTPUT
-                        name of the output file
+                        directory of the output files
   -v, --verbose         Log verbose
+  -s, --show-progress   Show progress bar
+  -x INDEXING_TOPIC, --indexing-topic INDEXING_TOPIC
+                        Topic to use for indexing the dataframes
 ```
 
 ### bag_plot
 
 Plot a key (or multiple keys) in a ROS bag file:
 ```
-usage: bag_plot [-h] -b BAG -k [KEY [KEY ...]] [-y  YLIM YLIM] [-c] [-v]
+usage: bag_plot [-h] -b BAG -k [KEY ...] [-y  YLIM YLIM] [-c] [-v] [-s]
 
 Bagfile key to graph
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
   -b BAG, --bag BAG     Bag file to read
-  -k [KEY [KEY ...]], --key [KEY [KEY ...]]
+  -k [KEY ...], --key [KEY ...]
                         Key you would like to plot
   -y  YLIM YLIM, --ylim YLIM YLIM
                         Set min and max y lim
   -c, --combined        Graph them all on one
   -v, --verbose         Log verbose
+  -s, --show-progress   Show progress bar
 ```
 
 #### Example
@@ -106,14 +113,15 @@ bag_plot -b 2019-01-16-14-14-37.bag -k /cmd_vel/linear/x /cmd_vel/angular/z -c
 
 Print a key (or multiple keys) in a ROS bag file:
 ```
-usage: bag_print [-h] -b BAG -k [KEY [KEY ...]] [-v]
+usage: bag_print [-h] -b BAG -k [KEY ...] [-v] [-s]
 
 Print one or multiple bag keys
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
   -b BAG, --bag BAG     Bag file to read
-  -k [KEY [KEY ...]], --key [KEY [KEY ...]]
+  -k [KEY ...], --key [KEY ...]
                         Key you would like to print
   -v, --verbose         Log verbose
+  -s, --show-progress   Show progress bar
 ```
