@@ -2,6 +2,10 @@
 Changelog for package rosbag_parquet
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.1.1 (2024-05-31)
+------------------
+* Improve timestamp datatype in parquet files
+
 1.1.0 (2023-11-21)
 ------------------
 * Disabled the progress bar by default in scripts and added a `-s`, `--show-progress` option to enable it.
