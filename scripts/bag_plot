@@ -48,7 +48,7 @@ def graph(dfs, keys, sharey):
                 key = key.strip(topic_name + '/')
                 if key in df.columns:
                     s = df[key].dropna()
-                    time = df['time'].dropna()
+                    time = df['timestamp'].dropna()
                     axes.plot(time, s.values, label=key)
 
         axes.legend(loc=0)
@@ -61,7 +61,7 @@ def graph(dfs, keys, sharey):
                 key = key.strip(topic_name + '/')
                 if key in df.columns:
                     s = df[key].dropna()
-                    time = df['time'].dropna()
+                    time = df['timestamp'].dropna()
                     axes[idx].plot(time, s.values)
                     axes[idx].set_title(key)
                     idx = idx + 1

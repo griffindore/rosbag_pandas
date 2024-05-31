@@ -49,7 +49,7 @@ def bag_to_dataframes(bag_name, include=None, exclude=None, indexing_topic=None,
     if not topics:
         raise RosbagPandaException("No topics in bag after filtering")
 
-    data_dict = {topic: {'time': np.empty(type_topic_info.topics[topic].message_count, dtype=np.float64)}
+    data_dict = {topic: {'timestamp': np.empty(type_topic_info.topics[topic].message_count, dtype=np.float64)}
                  for topic in topics}
     if indexing_topic is not None:
         data_dict['/index'] = {indexing_topic: pd.array([None] * type_topic_info.topics[indexing_topic].message_count,
@@ -62,7 +62,7 @@ def bag_to_dataframes(bag_name, include=None, exclude=None, indexing_topic=None,
         flattened_dict = _get_flattened_dictionary_from_ros_msg(msg, flatten_dict_sep)
         time = t.to_sec()
         curr_msg_count = msg_count_dict[topic]
-        data_dict[topic]["time"][curr_msg_count] = time
+        data_dict[topic]["timestamp"][curr_msg_count] = time
         for key, item in flattened_dict.items():
             if flatten_lists and isinstance(item, list):
                 keys = [key + f'_{i}' for i in range(len(key))]
@@ -101,6 +101,7 @@ def bag_to_dataframes(bag_name, include=None, exclude=None, indexing_topic=None,
     dfs = {}
     for topic in topics:
         df = pd.DataFrame(data_dict[topic])
+        df['timestamp'] = pd.to_datetime(df['timestamp'], unit='s')
         df.name = topic
         dfs[topic] = df
     if indexing_topic is not None:
