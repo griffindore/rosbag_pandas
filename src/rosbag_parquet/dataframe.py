@@ -1,17 +1,33 @@
 #!/usr/bin/env python
 
 import logging
+import re
 
 import numpy as np
 import pandas as pd
 import rosbag
 from flatten_dict import flatten
 from tqdm import tqdm
-from rospy_message_converter.message_converter import convert_ros_message_to_dictionary
+from rospy_message_converter import message_converter
 
 
 class RosbagPandaException(Exception):
     pass
+
+
+def _convert_ros_type_to_python(func):
+    def inner(field_type, field_value):
+        if message_converter._is_field_type_a_primitive_array(field_type):
+            try:
+                return np.frombuffer(field_value, dtype=field_type.split('[')[0])
+            except Exception:
+                pass
+        return func(field_type, field_value)
+    return inner
+
+
+# Update _convert_from_ros_type to generate numpy arrays of correct dtype
+message_converter._convert_from_ros_type = _convert_ros_type_to_python(message_converter._convert_from_ros_type)
 
 
 def bag_to_dataframes(bag_name, include=None, exclude=None, indexing_topic=None, exclude_strings=False,
@@ -118,7 +134,8 @@ def _get_flattened_dictionary_from_ros_msg(msg, sep="."):
     :param msg: ROS msg instance
     :return: Flattened dict
     """
-    return flatten(convert_ros_message_to_dictionary(msg), reducer=lambda a, b: b if not a else a + sep + b)
+    return flatten(message_converter.convert_ros_message_to_dictionary(msg),
+                   reducer=lambda a, b: b if not a else a + sep + b)
 
 
 def _get_filtered_topics(topics, include, exclude):
